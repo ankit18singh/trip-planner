@@ -7,15 +7,16 @@
     [loading]="citiesLoading"
     typeToSearchText="Please type characters to search"
     [typeahead]="citiesInput$"
-    placeholder="Select City"
+    placeholder="Select your city"
     [ngModelOptions]="{ standalone: true }"
     [(ngModel)]="city"
     (ngModelChange)="selectedCity($event)"
     #select
+    class="custom"
     (close)="select.blur(); select.focus()"
   >
     <ng-template ng-label-tmp let-item="item">
-      <p class="text-md font-semibold text-gray-600">
+      <p class="text-md font-semibold text-gray-400">
         {{ item.name }}
         <span class="text-sm font-medium text-gray-500"
           >({{ item.contId | enumFormatter }})</span
@@ -24,9 +25,9 @@
     </ng-template>
 
     <ng-template ng-option-tmp let-item="item">
-      <p class="text-md font-semibold text-gray-600">
+      <p class="text-md font-semibold text-gray-900">
         {{ item.name }}
-        <span class="text-sm font-medium text-gray-500"
+        <span class="text-sm font-medium text-gray-800"
           >({{ item.contId | enumFormatter }})</span
         >
       </p>
@@ -35,16 +36,26 @@
 </div>
 
 <div class="mt-5" *ngIf="trips">
-  <p class="text-md font-bold text-gray-800">Routes</p>
-  <p class="text-sm font-normal text-gray-600 mb-5">
-    List of connected routes you can use to travel the shortest distance to
-    cover each continent are shown below.
+  <p class="text-md font-bold text-gray-400 mb-2">Recommended Shortest Route</p>
+  <ng-container *ngFor="let item of trips; let i = index; last as l">
+    <span
+      class="font-bold text-sm text-gray-500 cursor-pointer hover:scale-105 hover:text-indigo-500"
+      (click)="selected(item)"
+      >{{ item.id }}</span
+    >
+    <span *ngIf="!l" class="font-bold text-sm text-gray-500"> → </span>
+  </ng-container>
+  <p class="text-sm font-normal text-gray-500 mt-2">
+    These are the connected routes you can follow to travel the shortest
+    distance to cover each continent.
   </p>
-  <div class="hm xl:hf overflow-y-auto">
+  <div class="hm 2xl:hf overflow-y-auto mt-2">
     <ng-container *ngFor="let item of trips; let i = index; last as l">
-      <div class="bg-white p-4 shadow-sm mt-5 rounded-lg" *ngIf="!l">
+      <div
+        class="bg-gray-900 p-4 shadow-sm mt-5 rounded-lg text-gray-400"
+        *ngIf="!l"
+      >
         <div class="flex items-center justify-between">
-          <!-- <div class="h-6 w-6 rounded-full border-2 border-bop bg-bop mr-2"></div> -->
           <div
             (click)="selected(item)"
             class="cursor-pointer hover:scale-105 hover:text-indigo-500"
@@ -58,7 +69,7 @@
           </div>
 
           <img
-            class="h-5 invert"
+            class="h-5"
             src="http://www.freeiconspng.com/uploads/description-white-plane-icon-2-27.png"
             alt=""
           />

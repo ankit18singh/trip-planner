@@ -1,5 +1,5 @@
 .hm {
-  height: 48vh;
+  height: 42vh;
 }
 
 .hf {
@@ -8,4 +8,15 @@
 
 .equal {
   flex: 0 1 auto;
+}
+
+ng-select {
+  ::ng-deep {
+    .ng-select-container,
+    .ng-option,
+    .custom {
+      background: #00000033;
+      border: rgb(156 163 175 / 0.2);
+    }
+  }
 }
