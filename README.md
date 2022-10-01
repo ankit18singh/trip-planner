@@ -13,5 +13,8 @@ Technologies used:
 
 ### Screenshot:
 
-![Screenshot 2022-10-01 at 6 52 18 PM](https://user-images.githubusercontent.com/13767678/193411541-0d4726cf-8e6d-4e9b-9a3c-0d1255fc54ad.png)
+![Screenshot 2022-10-01 at 7 11 23 PM](https://user-images.githubusercontent.com/13767678/193412363-21575851-0035-4956-8ef2-75ba51f5c95a.png)
+
+https://user-images.githubusercontent.com/13767678/193412350-5b55ed29-27f1-422d-a3eb-da6c82d43a95.mov
+
 
