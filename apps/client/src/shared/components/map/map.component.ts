@@ -17,7 +17,7 @@ import { MapService } from '../../services/map.service';
 })
 export class MapComponent implements OnInit, OnChanges {
   map!: mapboxgl.Map;
-  style = 'mapbox://styles/mapbox/outdoors-v9';
+  style = 'mapbox://styles/mapbox/dark-v10';
 
   @Input() lat = 37.75;
   @Input() lng = -122.41;
