@@ -73,6 +73,10 @@ export class TripSearchComponent implements OnInit {
       }
     }
   }
+
+  selected(item: ICity) {
+    this.emitSelectedCity.emit(item)
+  }
 }
 
 @NgModule({

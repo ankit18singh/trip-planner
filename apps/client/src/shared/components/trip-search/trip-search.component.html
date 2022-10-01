@@ -45,7 +45,7 @@
       <div class="bg-white p-4 shadow-sm mt-5 rounded-lg" *ngIf="!l">
         <div class="flex items-center justify-between">
           <!-- <div class="h-6 w-6 rounded-full border-2 border-bop bg-bop mr-2"></div> -->
-          <div>
+          <div (click)="selected(item)" class="cursor-pointer hover:scale-105">
             <p class="text-md font-semibold">
               {{ item.name }}
             </p>
@@ -60,7 +60,10 @@
             alt=""
           />
 
-          <div>
+          <div
+            (click)="selected(trips[i + 1])"
+            class="cursor-pointer hover:scale-105"
+          >
             <p class="text-md font-semibold">
               {{ trips[i + 1].name }}
             </p>
