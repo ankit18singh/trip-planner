@@ -45,6 +45,7 @@ export interface ICity {
   subId: null | string;
   terId: null | string;
   con: number;
+  distance: number
 }
 
 export enum IContID {

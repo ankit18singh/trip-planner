@@ -64,7 +64,7 @@ export class TripService {
         this.worldMap.filter((item: IWorldMap) => item.continent !== currentCity.contId).forEach((mapItem: IWorldMap) => {
             let shortest = null
             let city = null
-            mapItem.countries.forEach((item: ICity) => {
+            mapItem.countries.map((item: ICity) => {
                 const distance = Utility.searchShortedDistance(currentCity.location.lat, currentCity.location.lon, item.location.lat, item.location.lon)
                 if (!shortest) {
                     shortest = distance
@@ -77,6 +77,7 @@ export class TripService {
                 }
 
                 tempShortestCity = city
+                item.distance = shortest
             })
             shortestCityArray.push(tempShortestCity)
             console.log(city.name, city.contId, shortest)

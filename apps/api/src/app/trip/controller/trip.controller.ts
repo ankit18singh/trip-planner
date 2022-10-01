@@ -18,7 +18,7 @@ export class TripController {
             const query = req.query.search as string
             const tripInstance = TripService.getInstance()
             const cities = tripInstance.getCities()
-            const result = cities.filter(item => item.name.includes(query))
+            const result = cities.filter(item => item.name?.toLowerCase().includes(query.toLowerCase()))
 
             res.send({
                 items: result,
