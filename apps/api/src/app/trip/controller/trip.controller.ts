@@ -35,7 +35,7 @@ export class TripController {
             const result = tripInstance.createTrip(req.body.city)
 
             res.send({
-                result,
+                items: result,
             })
         } catch(err) {
             // TODO: add a logger class here
