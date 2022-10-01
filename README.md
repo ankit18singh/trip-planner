@@ -11,6 +11,7 @@ Technologies used:
 - Tailwind for styling
 - Mapbox Gl for Geolocation rendering
 
-Working sample:
+### Screenshot:
+
 ![Screenshot 2022-10-01 at 6 52 18 PM](https://user-images.githubusercontent.com/13767678/193411541-0d4726cf-8e6d-4e9b-9a3c-0d1255fc54ad.png)
 
