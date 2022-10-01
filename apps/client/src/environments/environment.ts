@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  apiURL: 'http://localhost:3333',
+  mapToken: 'pk.eyJ1IjoiYW5raXQxOHNpbmdoIiwiYSI6ImNsOHBveTRiODFkY24zb3A0a3V3eXZrdGEifQ.mfjCVwpfrbRAyDv-SPuO9w'
 };
 
 /*

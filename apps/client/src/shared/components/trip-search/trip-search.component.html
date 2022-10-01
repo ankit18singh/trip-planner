@@ -1,0 +1,24 @@
+<div class="container">
+  <ng-select
+    required="true"
+    name="cities"
+    [items]="cities$ | async"
+    [trackByFn]="trackByFn"
+    [loading]="citiesLoading"
+    typeToSearchText="Please type characters to search"
+    [typeahead]="citiesInput$"
+    placeholder="Select Role"
+    [ngModelOptions]="{ standalone: true }"
+    [(ngModel)]="selectedCity"
+    #select
+    (close)="select.blur(); select.focus()"
+  >
+    <ng-template ng-label-tmp let-item="item">
+      {{ item.name }}
+    </ng-template>
+
+    <ng-template ng-option-tmp let-item="item">
+      {{ item.name }}
+    </ng-template>
+  </ng-select>
+</div>
