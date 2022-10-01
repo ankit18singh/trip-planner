@@ -67,7 +67,7 @@ export class TripSearchComponent implements OnInit {
   async selectedCity(event: ICity) {
     if (event) {
       this.emitSelectedCity.emit(event)
-      const result: any = await this.tripService.createTrip(event.name).toPromise();
+      const result: any = await this.tripService.createTrip(event.id).toPromise();
       if (result) {
         this.trips = result.items
       }

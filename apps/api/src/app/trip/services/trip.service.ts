@@ -53,38 +53,62 @@ export class TripService {
         let currentCity = null
         const acc = []
         this.worldMap.forEach((map: IWorldMap) => {
-            const selectedCity = map.countries.find(item => item.name === city)
+            const selectedCity = map.countries.find(item => item.id === city)
             if (selectedCity) {
                 currentCity = selectedCity
             }
         })
 
+        const pendingLocations = this.worldMap.filter((mapItem: IWorldMap) => mapItem.continent !== currentCity.contId)
+        const shortestCityArray = this.nextShortest(currentCity, pendingLocations, acc)
+        acc.push(currentCity, ...shortestCityArray, currentCity)
+        return acc
+    }
+
+    // Select a city
+    // Search from all the continents except that country
+    // create a new filtered location
+    // Find the nearest continent store it to array
+    // Set that city as current city
+    // repeat till filtered locaiton is empty
+    private nextShortest(currentLocation: ICity, remainingLocations: IWorldMap[], resultArray: any[]) {
+        if (remainingLocations.length === 1) {
+            return resultArray
+        }
+
+        let tempCurrentLocation = currentLocation
         let tempShortestCity = null
         const shortestCityArray = []
-        this.worldMap.filter((item: IWorldMap) => item.continent !== currentCity.contId).forEach((mapItem: IWorldMap) => {
-            let shortest = null
-            let city = null
-            mapItem.countries.map((item: ICity) => {
-                const distance = Utility.searchShortedDistance(currentCity.location.lat, currentCity.location.lon, item.location.lat, item.location.lon)
-                if (!shortest) {
-                    shortest = distance
-                    city = item
+        const pendingLocations = remainingLocations.filter((mapItem: IWorldMap) => mapItem.continent !== tempCurrentLocation.contId)
+        pendingLocations.forEach((location: IWorldMap) => {
+            let shortestDistance = null;
+            let shortestDistantCity = null;
+            location.countries.map((city: ICity) => {
+                const distance = Utility.searchShortedDistance(
+                    tempCurrentLocation.location.lat, 
+                    tempCurrentLocation.location.lon, 
+                    city.location.lat, 
+                    city.location.lon
+                )
+                if (!shortestDistance) {
+                    shortestDistance = distance
+                    shortestDistantCity = city
                 } else {
-                    const currentShortest = shortest;
-                    const currentShortestCity = city;
-                    shortest = currentShortest < distance ? currentShortest : distance
-                    city = currentShortest < distance ? currentShortestCity : item
+                    const currentShortest = shortestDistance;
+                    const currentShortestCity = shortestDistantCity;
+                    shortestDistance = currentShortest < distance ? currentShortest : distance
+                    shortestDistantCity = currentShortest < distance ? currentShortestCity : city
                 }
 
-                tempShortestCity = city
-                item.distance = shortest
+                tempShortestCity = shortestDistantCity
+                city.distance = shortestDistance
             })
             shortestCityArray.push(tempShortestCity)
-            console.log(city.name, city.contId, shortest)
+            shortestCityArray.sort((cityOne: ICity, cityTwo: ICity) => cityOne.distance - cityTwo.distance)
+            tempCurrentLocation = shortestCityArray[0]
         })
-        
-        acc.push(currentCity, ...shortestCityArray, currentCity)
-
-        return acc
+        resultArray.push(tempCurrentLocation)
+        resultArray.sort((cityOne: ICity, cityTwo: ICity) => cityOne.distance - cityTwo.distance)
+        return this.nextShortest(tempCurrentLocation, pendingLocations, resultArray)
     }
 }
