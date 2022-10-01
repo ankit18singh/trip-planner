@@ -7,7 +7,7 @@
     [loading]="citiesLoading"
     typeToSearchText="Please type characters to search"
     [typeahead]="citiesInput$"
-    placeholder="Select Role"
+    placeholder="Select City"
     [ngModelOptions]="{ standalone: true }"
     [(ngModel)]="city"
     (ngModelChange)="selectedCity($event)"
@@ -15,11 +15,21 @@
     (close)="select.blur(); select.focus()"
   >
     <ng-template ng-label-tmp let-item="item">
-      {{ item.name }}
+      <p class="text-md font-semibold text-gray-600">
+        {{ item.name }}
+        <span class="text-sm font-medium text-gray-500"
+          >({{ item.contId | enumFormatter }})</span
+        >
+      </p>
     </ng-template>
 
     <ng-template ng-option-tmp let-item="item">
-      {{ item.name }}
+      <p class="text-md font-semibold text-gray-600">
+        {{ item.name }}
+        <span class="text-sm font-medium text-gray-500"
+          >({{ item.contId | enumFormatter }})</span
+        >
+      </p>
     </ng-template>
   </ng-select>
 </div>
