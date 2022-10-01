@@ -9,7 +9,8 @@
     [typeahead]="citiesInput$"
     placeholder="Select Role"
     [ngModelOptions]="{ standalone: true }"
-    [(ngModel)]="selectedCity"
+    [(ngModel)]="city"
+    (ngModelChange)="selectedCity($event)"
     #select
     (close)="select.blur(); select.focus()"
   >
@@ -21,4 +22,42 @@
       {{ item.name }}
     </ng-template>
   </ng-select>
+</div>
+
+<div class="mt-5" *ngIf="trips">
+  <p class="text-lg font-bold text-gray-800">Routes</p>
+  <p class="text-md font-normal text-gray-600">
+    List of connected routes you can use to travel the shortest distance to
+    cover each continent are shown below.
+  </p>
+  <ng-container *ngFor="let item of trips; let i = index; last as l">
+    <div class="bg-white p-4 shadow-sm mt-5 rounded-lg" *ngIf="!l">
+      <div class="flex items-center justify-between">
+        <!-- <div class="h-6 w-6 rounded-full border-2 border-bop bg-bop mr-2"></div> -->
+        <div>
+          <p class="text-md font-semibold">
+            {{ item.name }}
+          </p>
+          <small class="text-sm font-medium text-gray-500">{{
+            item.contId | enumFormatter
+          }}</small>
+        </div>
+
+        <img
+          class="h-5 invert"
+          src="http://www.freeiconspng.com/uploads/description-white-plane-icon-2-27.png"
+          alt=""
+        />
+
+        <div>
+          <p class="text-md font-semibold">
+            {{ trips[i + 1].name }}
+          </p>
+          <small class="text-sm font-medium text-gray-500">{{
+            trips[i + 1].contId | enumFormatter
+          }}</small>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>

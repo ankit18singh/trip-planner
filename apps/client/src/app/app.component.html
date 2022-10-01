@@ -1,9 +1,16 @@
 <div>
-  <div class="absolute z-50 h-screen bg-white p-8 w-1/4">
-    <p class="text-xl font-bold mb-5">Trip Planner</p>
-    <trip-planner-search></trip-planner-search>
+  <div
+    class="absolute z-50 h-screen bg-white p-8 w-1/4 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-200"
+  >
+    <trip-planner-search
+      (emitSelectedCity)="selectedCity($event)"
+    ></trip-planner-search>
   </div>
   <div class="z-10">
-    <trip-planner-map></trip-planner-map>
+    <trip-planner-map
+      [lat]="lat"
+      [lng]="lng"
+      [selectedCity]="city"
+    ></trip-planner-map>
   </div>
 </div>

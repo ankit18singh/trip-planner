@@ -91,7 +91,3 @@ export enum RegID {
   WesternAsia = 'western-asia',
   WesternEurope = 'western-europe',
 }
-
-export interface ITrip {
-    location: ICity[]
-}

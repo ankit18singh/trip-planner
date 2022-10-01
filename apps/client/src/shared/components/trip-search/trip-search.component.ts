@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +17,7 @@ import {
 } from 'rxjs';
 import { ICity } from '../../models';
 import { CommonModule } from '@angular/common';
+import { EnumFormatterPipeModule } from '../../pipe/enum-formatter.pipe';
 
 @Component({
   selector: 'trip-planner-search',
@@ -26,11 +27,14 @@ import { CommonModule } from '@angular/common';
 export class TripSearchComponent implements OnInit {
   @ViewChild('search', { static: false }) searchField!: ElementRef;
 
-  cities$!: Observable<any>;
+  cities$!: Observable<ICity[]>;
   citiesLoading!: boolean;
   citiesInput$ = new Subject<string>();
+  city!: ICity
 
-  selectedCity!: ICity;
+  trips!: ICity[]
+
+  @Output() emitSelectedCity = new EventEmitter()
 
   constructor(private tripService: TripService) {}
 
@@ -59,10 +63,20 @@ export class TripSearchComponent implements OnInit {
   trackByFn(item: any) {
     return item.id;
   }
+
+  async selectedCity(event: ICity) {
+    if (event) {
+      this.emitSelectedCity.emit(event)
+      const result: any = await this.tripService.createTrip(event.name).toPromise();
+      if (result) {
+        this.trips = result.items
+      }
+    }
+  }
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, NgSelectModule],
+  imports: [CommonModule, FormsModule, NgSelectModule, EnumFormatterPipeModule],
   exports: [TripSearchComponent],
   declarations: [TripSearchComponent],
   providers: [],
