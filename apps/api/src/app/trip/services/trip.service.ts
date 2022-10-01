@@ -50,19 +50,13 @@ export class TripService {
     }
 
     public createTrip(city: string) {
-        let currentCity = null
         const acc = []
-        this.worldMap.forEach((map: IWorldMap) => {
-            const selectedCity = map.countries.find(item => item.id === city)
-            if (selectedCity) {
-                currentCity = selectedCity
-            }
-        })
-
-        const pendingLocations = this.worldMap.filter((mapItem: IWorldMap) => mapItem.continent !== currentCity.contId)
-        const shortestCityArray = this.nextShortest(currentCity, pendingLocations, acc)
-        acc.push(currentCity, ...shortestCityArray, currentCity)
-        return acc
+        const currentCity = this.filteredCities.find((map: ICity) => map.id === city)
+        const pendingCities = this.filteredCities
+        const shortestCityArray = this.nextShortest(currentCity, pendingCities, acc, currentCity)
+        shortestCityArray.push(currentCity)
+        shortestCityArray.unshift(currentCity)
+        return shortestCityArray
     }
 
     // Select a city
@@ -71,44 +65,46 @@ export class TripService {
     // Find the nearest continent store it to array
     // Set that city as current city
     // repeat till filtered locaiton is empty
-    private nextShortest(currentLocation: ICity, remainingLocations: IWorldMap[], resultArray: any[]) {
-        if (remainingLocations.length === 1) {
+    private nextShortest(currentLocation: ICity, remainingLocations: ICity[], resultArray: any[], baseCity: ICity) {
+        const pendingLocations = remainingLocations.filter((location: ICity) => location.contId !== currentLocation.contId)
+        if (!pendingLocations.length) {
+            const last = resultArray[resultArray.length - 1]
+            const distance = Utility.searchShortedDistance(
+                last.location.lat, 
+                last.location.lon, 
+                baseCity.location.lat, 
+                baseCity.location.lon
+            )
+            baseCity.distance = distance
             return resultArray
         }
 
-        let tempCurrentLocation = currentLocation
+        const tempCurrentLocation = currentLocation
         let tempShortestCity = null
-        const shortestCityArray = []
-        const pendingLocations = remainingLocations.filter((mapItem: IWorldMap) => mapItem.continent !== tempCurrentLocation.contId)
-        pendingLocations.forEach((location: IWorldMap) => {
-            let shortestDistance = null;
-            let shortestDistantCity = null;
-            location.countries.map((city: ICity) => {
-                const distance = Utility.searchShortedDistance(
-                    tempCurrentLocation.location.lat, 
-                    tempCurrentLocation.location.lon, 
-                    city.location.lat, 
-                    city.location.lon
-                )
-                if (!shortestDistance) {
-                    shortestDistance = distance
-                    shortestDistantCity = city
-                } else {
-                    const currentShortest = shortestDistance;
-                    const currentShortestCity = shortestDistantCity;
-                    shortestDistance = currentShortest < distance ? currentShortest : distance
-                    shortestDistantCity = currentShortest < distance ? currentShortestCity : city
-                }
+        let shortestDistance = null;
+        let shortestDistantCity = null;
+        pendingLocations.forEach((city: ICity) => {
+            const distance = Utility.searchShortedDistance(
+                tempCurrentLocation.location.lat, 
+                tempCurrentLocation.location.lon, 
+                city.location.lat, 
+                city.location.lon
+            )
+            if (!shortestDistance) {
+                shortestDistance = distance
+                shortestDistantCity = city
+            } else {
+                const currentShortest = shortestDistance
+                const currentShortestCity = shortestDistantCity
+                shortestDistance = currentShortest < distance ? currentShortest : distance
+                shortestDistantCity = currentShortest < distance ? currentShortestCity : city
+            }
 
-                tempShortestCity = shortestDistantCity
-                city.distance = shortestDistance
-            })
-            shortestCityArray.push(tempShortestCity)
-            shortestCityArray.sort((cityOne: ICity, cityTwo: ICity) => cityOne.distance - cityTwo.distance)
-            tempCurrentLocation = shortestCityArray[0]
+            tempShortestCity = shortestDistantCity
+            city.distance = shortestDistance
         })
-        resultArray.push(tempCurrentLocation)
-        resultArray.sort((cityOne: ICity, cityTwo: ICity) => cityOne.distance - cityTwo.distance)
-        return this.nextShortest(tempCurrentLocation, pendingLocations, resultArray)
+        resultArray.push(tempShortestCity)
+
+        return this.nextShortest(tempShortestCity, pendingLocations, resultArray, baseCity)
     }
 }

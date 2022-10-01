@@ -36,7 +36,7 @@
 
 <div class="mt-5" *ngIf="trips">
   <p class="text-md font-bold text-gray-800">Routes</p>
-  <p class="text-sm font-normal text-gray-600">
+  <p class="text-sm font-normal text-gray-600 mb-5">
     List of connected routes you can use to travel the shortest distance to
     cover each continent are shown below.
   </p>
@@ -52,9 +52,9 @@
             <p class="text-md font-semibold hover:text-indigo-500">
               {{ item.name }}
             </p>
-            <small class="text-sm font-medium text-gray-500">{{
-              item.contId | enumFormatter
-            }}</small>
+            <small class="text-sm font-medium text-gray-500">
+              {{ item.id }} {{ item.contId | enumFormatter }}
+            </small>
           </div>
 
           <img
@@ -70,14 +70,15 @@
             <p class="text-md font-semibold hover:text-indigo-500">
               {{ trips[i + 1].name }}
             </p>
-            <small class="text-sm font-medium text-gray-500">{{
-              trips[i + 1].contId | enumFormatter
-            }}</small>
+            <small class="text-sm font-medium text-gray-500">
+              {{ trips[i + 1].id }},
+              {{ trips[i + 1].contId | enumFormatter }}</small
+            >
           </div>
         </div>
-        <pre class="mt-2 font-semibold font-md">
-Distance: {{ trips[i].distance | number: '1.2-2' }} KM</pre
-        >
+        <div class="mt-4 font-semibold text-xs text-indigo-500">
+          {{ trips[i + 1].distance | number: '1.2-2' }} KM
+        </div>
       </div>
     </ng-container>
   </div>

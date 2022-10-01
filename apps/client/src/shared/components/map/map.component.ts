@@ -11,7 +11,9 @@ import { MapService } from '../../services/map.service';
 @Component({
   selector: 'trip-planner-map',
   styleUrls: ['./map.component.scss'],
-  template: `<div class="map" id="map"></div>`,
+  template: `
+    <div class="map" id="map"></div>
+  `,
 })
 export class MapComponent implements OnInit, OnChanges {
   map!: mapboxgl.Map;
@@ -113,10 +115,6 @@ export class MapComponent implements OnInit, OnChanges {
     })
       .setLngLat([lat, lng])
       .addTo(this.map);
-  }
-
-  removeMarker() {
-    this.marker.remove()
   }
 }
 
